@@ -1,0 +1,14 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/uesc_eventos
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+    jpa:
+        show-sql: false
+        hibernate.ddl-auto: update
+        generate-ddl: true
+        properties:
+            hibernate:
+               jdbc.lob.non_contextual_creation: true
+               enable_lazy_load_no_trans: true
+
