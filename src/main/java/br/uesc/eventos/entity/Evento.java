@@ -12,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -40,16 +39,12 @@ public class Evento extends BaseEntity {
     @NotNull
     private Integer qtdVagas;
 
-    @JsonFormat(pattern = "HH:mm dd/MM/yyyy")
     private LocalDateTime inicio;
 
-    @JsonFormat(pattern = "HH:mm dd/MM/yyyy")
     private LocalDateTime fim;
 
-    @JsonFormat(pattern = "HH:mm dd/MM/yyyy")
     private LocalDateTime inicioInscricoes;
 
-    @JsonFormat(pattern = "HH:mm dd/MM/yyyy")
     private LocalDateTime fimInscricoes;
 
     @ManyToOne(optional = false)
