@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.uesc.eventos.dto.EventoCreateDTO;
+import br.uesc.eventos.dto.EventoFormDTO;
 import br.uesc.eventos.dto.EventoDTO;
 import br.uesc.eventos.entity.Evento;
 import br.uesc.eventos.repository.EventoRepository;
@@ -25,10 +25,17 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
 
     @PostMapping("/storeDto")
     @Transactional
-    public ResponseEntity<Evento> storeDto(@RequestBody @Valid EventoCreateDTO dto) {
-        Evento evento = service.fromDto(dto);
+    public ResponseEntity<Evento> storeDto(@RequestBody @Valid EventoFormDTO dto) {
+        Evento evento = service.fromFormDto(dto);
         evento = service.create(evento);
         return ResponseEntity.status(201).body(evento);
+    }
+    
+    @GetMapping("/available")
+    @Transactional
+    public ResponseEntity<List<EventoDTO>> findAvailable() {
+        return ResponseEntity
+                .ok(service.findAll().stream().map(evento -> new EventoDTO(evento)).collect(Collectors.toList()));
     }
 
     @GetMapping("/findAllDto")
