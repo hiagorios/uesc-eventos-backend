@@ -1,5 +1,8 @@
 package br.uesc.eventos.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,11 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
 
     @Autowired
     private MinistranteService ministranteService;
+
+    public List<Evento> findAllAvailable() {
+        LocalDateTime agora = LocalDateTime.now();
+        return getRepository().findByInicioInscricoesLessThanAndFimInscricoesGreaterThan(agora, agora);
+    }
 
     public Evento fromFormDto(EventoFormDTO dto) {
         Evento evento = dto.generatePartialEntity();
