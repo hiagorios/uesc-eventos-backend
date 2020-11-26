@@ -26,7 +26,8 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
 
     public Evento fromFormDto(EventoFormDTO dto) {
         Evento evento = dto.generatePartialEntity();
-        evento.setOrganizador(usuarioService.findById(dto.getIdOrganizador()));
+     // TODO após implementar autenticação, setar o usuario logado
+        evento.setOrganizador(usuarioService.findOrganizador());
         if (dto.getIdEventoPai() != null) {
             evento.setEventoPai(findById(dto.getIdEventoPai()));
         }
