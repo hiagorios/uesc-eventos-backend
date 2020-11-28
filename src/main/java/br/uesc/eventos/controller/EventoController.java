@@ -35,7 +35,7 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
     @Transactional
     public ResponseEntity<List<EventoDTO>> findAvailable() {
         return ResponseEntity
-                .ok(service.findAll().stream().map(evento -> new EventoDTO(evento)).collect(Collectors.toList()));
+                .ok(service.findAllAvailable().stream().map(evento -> new EventoDTO(evento)).collect(Collectors.toList()));
     }
 
     @GetMapping("/findAllDto")
