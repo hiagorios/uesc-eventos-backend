@@ -2,18 +2,15 @@ package br.uesc.eventos.dto;
 
 import br.uesc.eventos.entity.Ministrante;
 
-public class MinistranteDTO implements BaseDTO<Ministrante> {
+public class MinistranteFormDTO implements BaseDTO<Ministrante> {
 
     private Long id;
     private String nome;
     private String email;
     private String formacao;
     
-    public MinistranteDTO() {
-        
-    }
     
-    public MinistranteDTO(Ministrante ministrante) {
+    public MinistranteFormDTO(Ministrante ministrante) {
         this.id = ministrante.getId();
         this.nome = ministrante.getNome();
         this.email = ministrante.getEmail();
