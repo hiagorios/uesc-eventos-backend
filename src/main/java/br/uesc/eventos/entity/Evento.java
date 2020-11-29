@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -21,6 +22,7 @@ public class Evento extends BaseEntity {
     private Evento eventoPai;
 
     @OneToMany(mappedBy = "eventoPai")
+    @JsonIgnore
     private Set<Evento> eventosFilhos;
 
     @NotNull
