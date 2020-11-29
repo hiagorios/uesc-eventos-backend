@@ -24,12 +24,4 @@ public class UsuarioService extends BaseService<Usuario, UsuarioRepository> {
         return list.get(0);
     }
 
-    public Usuario findOrganizador() {
-        List<Usuario> list = getRepository().findByTipoUsuario(TipoUsuario.ORGANIZADOR);
-        if (list.isEmpty()) {
-            return null;
-        }
-        return list.get(0);
-    }
-
 }
