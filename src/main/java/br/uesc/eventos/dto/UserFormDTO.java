@@ -2,18 +2,15 @@ package br.uesc.eventos.dto;
 
 import br.uesc.eventos.entity.Usuario;
 
-public class UsuarioDTO implements BaseDTO<Usuario> {
+public class UserFormDTO implements BaseDTO<Usuario> {
 
     private Long id;
     private String nome;
     private String email;
     private String senha;
     
-    public UsuarioDTO() {
-        
-    }
     
-    public UsuarioDTO(Usuario usuario) {
+    public UserFormDTO(Usuario usuario) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
