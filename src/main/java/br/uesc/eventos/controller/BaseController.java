@@ -29,7 +29,7 @@ public abstract class BaseController<E extends BaseEntity, R extends JpaReposito
 	@GetMapping
 	public ResponseEntity<List<E>> findAll() {
 		List<E> entities = service.findAll();
-		return ResponseEntity.ok(entities);
+		return ResponseEntity.ok().body(entities);
 	}
 
 	@PostMapping
@@ -43,14 +43,14 @@ public abstract class BaseController<E extends BaseEntity, R extends JpaReposito
 	@GetMapping("/{id}")
 	public ResponseEntity<E> findById(@PathVariable(value = "id") Long id) throws NotFoundException {
 		E entity = service.findById(id);
-		return ResponseEntity.ok(entity);
+		return ResponseEntity.ok().body(entity);
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<E> update(@PathVariable(value = "id") Long id, @RequestBody @Valid E entity) {
-		E updatedEntity = service.update(id, entity);
-		return ResponseEntity.ok(updatedEntity);
+		service.update(id, entity);
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{id}")
