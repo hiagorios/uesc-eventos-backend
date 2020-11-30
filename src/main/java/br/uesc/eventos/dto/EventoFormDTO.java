@@ -1,6 +1,7 @@
 package br.uesc.eventos.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.uesc.eventos.entity.Evento;
@@ -56,6 +57,9 @@ public class EventoFormDTO implements BaseDTO<Evento> {
         this.fim = evento.getFim();
         this.inicioInscricoes = evento.getInicioInscricoes();
         this.fimInscricoes = evento.getFimInscricoes();
+        evento.getMinistrantes().forEach(ministrante -> {
+            getIdsMinistrantes().add(ministrante.getId());
+        });
     }
 
     public Long getId() {
@@ -67,6 +71,9 @@ public class EventoFormDTO implements BaseDTO<Evento> {
     }
 
     public List<Long> getIdsMinistrantes() {
+        if(this.idsMinistrantes == null) {
+            idsMinistrantes = new ArrayList<>();
+        }
         return idsMinistrantes;
     }
 

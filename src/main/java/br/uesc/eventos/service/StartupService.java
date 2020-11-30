@@ -60,7 +60,7 @@ public class StartupService {
 
         Evento e2 = new Evento(u2, "Campeonato de Pebolim", "Quem perder passa debaixo da mesa", "Céu",
                 Double.valueOf(20d), 30, now.plusHours(1), now.plusHours(4), now.minusDays(5), now.plusMinutes(5),
-                null);
+                e1);
         e2.setMinistrantes(new HashSet<>(Arrays.asList(m3)));
         e2 = eventoService.create(e2);
 
