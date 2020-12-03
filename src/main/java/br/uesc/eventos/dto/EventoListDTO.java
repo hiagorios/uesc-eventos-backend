@@ -17,6 +17,7 @@ public class EventoListDTO implements BaseDTO<Evento> {
     private String imagem;
     private Double preco;
     private Integer qtdVagas;
+    private Integer vagasRestantes;
     private LocalDateTime inicioInscricoes;
     private LocalDateTime fimInscricoes;
 
@@ -161,5 +162,13 @@ public class EventoListDTO implements BaseDTO<Evento> {
 
     public void setFimInscricoes(LocalDateTime fimInscricoes) {
         this.fimInscricoes = fimInscricoes;
+    }
+
+    public Integer getVagasRestantes() {
+        return vagasRestantes;
+    }
+
+    public void setVagasRestantes(Integer vagasRestantes) {
+        this.vagasRestantes = vagasRestantes;
     }
 }

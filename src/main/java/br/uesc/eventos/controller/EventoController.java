@@ -29,17 +29,14 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
     @Transactional
     public ResponseEntity<List<EventoListDTO>> findAvailable() {
         return ResponseEntity.ok().body(
-                service.findAllAvailable().stream().map(EventoListDTO::new).collect(Collectors.toList()));
+                service.findAllAvailable().stream().map(evento -> service.toListDto(evento)).collect(Collectors.toList()));
     }
 
     @GetMapping("/allDto")
     @Transactional
-    public ResponseEntity<List<EventoListDTO>> findAllDto(@RequestParam(value = "excludeId", required = false) Long id) {
-        List<EventoListDTO> list = service.findAll().stream().map(EventoListDTO::new)
+    public ResponseEntity<List<EventoListDTO>> findAllDto(@RequestParam(value = "excludeId", required = false) Long excludeId) {
+        List<EventoListDTO> list = service.findAllExcluding(excludeId).stream().map(evento -> service.toListDto(evento))
                 .collect(Collectors.toList());
-        if (id != null) {
-            list = list.stream().filter(evento -> evento.getId() != id).collect(Collectors.toList());
-        }
         return ResponseEntity.ok().body(list);
     }
 

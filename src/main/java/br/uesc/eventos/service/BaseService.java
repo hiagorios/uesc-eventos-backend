@@ -25,11 +25,10 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
 	
 	public E findById(Long id) {
         Optional<E> optional = getRepository().findById(id);
-        if (!optional.isPresent()) {
+        if (optional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entidade não foi encontrada!");
         }
-        E entity = optional.get();
-        return entity;
+		return optional.get();
     }
 
 	public E create(E entity) {
