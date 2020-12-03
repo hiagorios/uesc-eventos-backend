@@ -41,6 +41,9 @@ public class Evento extends BaseEntity {
     @NotNull
     private Integer qtdVagas;
 
+    @Lob
+    private String imagem;
+
     private LocalDateTime inicio;
 
     private LocalDateTime fim;
@@ -201,4 +204,11 @@ public class Evento extends BaseEntity {
         this.participantes = participantes;
     }
 
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 }
