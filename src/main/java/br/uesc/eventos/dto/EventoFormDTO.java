@@ -14,6 +14,7 @@ public class EventoFormDTO implements BaseDTO<Evento> {
     private String nome;
     private String descricao;
     private String local;
+    private String imagem;
     private Double preco;
     private Integer qtdVagas;
     private LocalDateTime inicio;
@@ -28,6 +29,7 @@ public class EventoFormDTO implements BaseDTO<Evento> {
         evento.setId(id);
         evento.setNome(nome);
         evento.setDescricao(descricao);
+        evento.setImagem(imagem);
         evento.setLocal(local);
         evento.setPreco(preco);
         evento.setQtdVagas(qtdVagas);
@@ -50,6 +52,7 @@ public class EventoFormDTO implements BaseDTO<Evento> {
         this.idOrganizador = evento.getOrganizador().getId();
         this.nome = evento.getNome();
         this.descricao = evento.getDescricao();
+        this.imagem = evento.getImagem();
         this.local = evento.getLocal();
         this.preco = evento.getPreco();
         this.qtdVagas = evento.getQtdVagas();
@@ -169,4 +172,11 @@ public class EventoFormDTO implements BaseDTO<Evento> {
         this.fimInscricoes = fimInscricoes;
     }
 
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 }

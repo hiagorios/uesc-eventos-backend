@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.uesc.eventos.dto.UserFormDTO;
+import br.uesc.eventos.dto.UsuarioFormDTO;
 import br.uesc.eventos.entity.Usuario;
 import br.uesc.eventos.enums.TipoUsuario;
 import br.uesc.eventos.repository.UsuarioRepository;
@@ -21,7 +21,7 @@ public class UsuarioController extends BaseController<Usuario, UsuarioRepository
 
     @PostMapping("/storeDto")
     @Transactional
-    public ResponseEntity<Usuario> storeDto(@RequestBody @Valid UserFormDTO dto) {
+    public ResponseEntity<Usuario> storeDto(@RequestBody @Valid UsuarioFormDTO dto) {
         Usuario usuario = service.fromFormDto(dto);
         usuario.setTipoUsuario(TipoUsuario.PARTICIPANTE);
         usuario = service.create(usuario);

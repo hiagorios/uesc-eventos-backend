@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.uesc.eventos.dto.UserFormDTO;
+import br.uesc.eventos.dto.UsuarioFormDTO;
 import br.uesc.eventos.entity.Usuario;
 import br.uesc.eventos.enums.TipoUsuario;
 import br.uesc.eventos.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService extends BaseService<Usuario, UsuarioRepository> {
-	public Usuario fromFormDto(UserFormDTO dto) {
+	public Usuario fromFormDto(UsuarioFormDTO dto) {
         Usuario usuario = dto.generatePartialEntity();
         return usuario;
     }
