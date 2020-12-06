@@ -25,6 +25,13 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
         return ResponseEntity.ok().body(new EventoFormDTO(evento));
     }
 
+    @GetMapping("/listDto/{id}")
+    @Transactional
+    public ResponseEntity<EventoListDTO> getListDto(@PathVariable Long id) {
+        Evento evento = service.findById(id);
+        return ResponseEntity.ok().body(service.toListDto(evento));
+    }
+
     @GetMapping("/available")
     @Transactional
     public ResponseEntity<List<EventoListDTO>> findAvailable() {
@@ -49,9 +56,16 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
         return ResponseEntity.created(uri).build();
     }
 
+    @PostMapping("/realizarInscricao/{eventoId}/{usuarioId}")
+    @Transactional
+    public ResponseEntity<Void> increver(@PathVariable Long eventoId, @PathVariable Long usuarioId){
+        this.service.inscrever(eventoId, usuarioId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/updateDto/{id}")
     @Transactional
-    public ResponseEntity<Evento> updateDto(@PathVariable Long id, @RequestBody EventoFormDTO dto) {
+    public ResponseEntity<Void> updateDto(@PathVariable Long id, @RequestBody EventoFormDTO dto) {
         Evento evento = service.fromFormDto(dto);
         service.update(id, evento);
         return ResponseEntity.noContent().build();
