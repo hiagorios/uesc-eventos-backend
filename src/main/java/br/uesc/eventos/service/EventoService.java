@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.uesc.eventos.dto.EventoListDTO;
+import br.uesc.eventos.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +52,12 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
         Integer vagasOcupadas = getRepository().findQtdParticipantes(evento.getId());
         dto.setVagasRestantes(evento.getQtdVagas() - vagasOcupadas);
         return dto;
+    }
+
+    public void inscrever(Long eventoId, Long usuarioId){
+        Usuario usuario = usuarioService.findById(usuarioId);
+        Evento evento = findById(eventoId);
+        usuario.getEventos().add(evento);
+        usuarioService.update(usuarioId, usuario);
     }
 }
