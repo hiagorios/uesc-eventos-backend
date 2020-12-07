@@ -1,4 +1,4 @@
-package br.uesc.eventos.controller.exception;
+package br.uesc.eventos.exception;
 
 public class ErrorObject {
 

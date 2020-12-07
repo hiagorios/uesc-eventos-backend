@@ -1,17 +1,19 @@
 package br.uesc.eventos.service;
 
+import br.uesc.eventos.entity.*;
+import br.uesc.eventos.enums.PermissaoEnum;
+import br.uesc.eventos.security.util.PasswordUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.uesc.eventos.entity.Evento;
-import br.uesc.eventos.entity.Ministrante;
-import br.uesc.eventos.entity.Usuario;
-import br.uesc.eventos.enums.TipoUsuario;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StartupService {
@@ -20,22 +22,38 @@ public class StartupService {
     private UsuarioService usuarioService;
 
     @Autowired
+    private PerfilService perfilService;
+
+    @Autowired
+    private PermissaoService permissaoService;
+
+    @Autowired
     private EventoService eventoService;
 
     @Autowired
     private MinistranteService ministranteService;
 
+    @Transactional
     public void instantiateDevDatabase() {
-        Usuario u1 = new Usuario("Hiago Rios", "hrcordeiro.cic@uesc.br", "123456", TipoUsuario.ADMINISTRADOR,
+        Set<Permissao> todasPermissoes = criarTodasPermissoes();
+        Perfil administrador = new Perfil("Administrador", todasPermissoes);
+        Perfil organizador = new Perfil("Organizador", getPermissoesOrganizador(todasPermissoes));
+        Perfil participante = new Perfil("Participante", getPermissoesParticipante(todasPermissoes));
+
+        administrador = perfilService.create(administrador);
+        organizador = perfilService.create(organizador);
+        participante = perfilService.create(participante);
+
+        Usuario u1 = new Usuario("Hiago Rios", "hrcordeiro.cic@uesc.br", PasswordUtil.encode("123456"), administrador,
                 "73856832076");
         u1 = usuarioService.create(u1);
-        Usuario u2 = new Usuario("Joao Henrique", "jhalgumacoisa.cic@uesc.br", "123456", TipoUsuario.ORGANIZADOR,
+        Usuario u2 = new Usuario("Joao Henrique", "jhalgumacoisa.cic@uesc.br", PasswordUtil.encode("123456"), organizador,
                 "94924483001");
         u2 = usuarioService.create(u2);
-        Usuario u3 = new Usuario("Allana Campos", "acagumacoisa.cic@uesc.br", "123456", TipoUsuario.PARTICIPANTE,
+        Usuario u3 = new Usuario("Allana Campos", "acagumacoisa.cic@uesc.br", PasswordUtil.encode("123456"), participante,
                 "49146701001");
         u3 = usuarioService.create(u3);
-        Usuario u4 = new Usuario("Daniel Penedo", "dpalgumacoisa.cic@uesc.br", "123456", TipoUsuario.PARTICIPANTE,
+        Usuario u4 = new Usuario("Daniel Penedo", "dpalgumacoisa.cic@uesc.br", PasswordUtil.encode("123456"), participante,
                 "31876323000");
         u4 = usuarioService.create(u4);
 
@@ -88,7 +106,31 @@ public class StartupService {
         usuarioService.update(u4.getId(), u4);
     }
 
+    @Transactional
     public void instantiateTestDatabase() {
 
+    }
+
+    public Set<Permissao> criarTodasPermissoes() {
+        return permissaoService.saveIfNotExistent(Stream.of(PermissaoEnum.values())
+                .map(Permissao::new).collect(Collectors.toSet()));
+    }
+
+    public Set<Permissao> getPermissoesOrganizador(Set<Permissao> todasPermissoes) {
+        Set<String> permissoes = Stream.of(
+                PermissaoEnum.CONSULTAR_EVENTO.name(), PermissaoEnum.CONSULTAR_MINISTRANTE.name(),
+                PermissaoEnum.CRIAR_EVENTO.name(), PermissaoEnum.CRIAR_MINISTRANTE.name(),
+                PermissaoEnum.EDITAR_EVENTO.name(), PermissaoEnum.EDITAR_MINISTRANTE.name(),
+                PermissaoEnum.DELETAR_EVENTO.name(), PermissaoEnum.DELETAR_MINISTRANTE.name(),
+                PermissaoEnum.INSCREVER_SE.name()
+        ).collect(Collectors.toSet());
+        return todasPermissoes.stream().filter(permissao -> permissoes.contains(permissao.getKey())).collect(Collectors.toSet());
+    }
+
+    public Set<Permissao> getPermissoesParticipante(Set<Permissao> todasPermissoes) {
+        Set<String> permissoes = Stream.of(
+                PermissaoEnum.CONSULTAR_EVENTO.name(), PermissaoEnum.INSCREVER_SE.name()
+        ).collect(Collectors.toSet());
+        return todasPermissoes.stream().filter(permissao -> permissoes.contains(permissao.getKey())).collect(Collectors.toSet());
     }
 }

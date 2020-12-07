@@ -3,6 +3,7 @@ package br.uesc.eventos.controller;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class MinistranteController extends BaseController<Ministrante, Ministran
 	
 	@PostMapping("/storeDto")
     @Transactional
+    @ApiOperation(value = "Enviar DTO para criação de ministrante")
     public ResponseEntity<Ministrante> storeDto(@RequestBody @Valid MinistranteFormDTO dto) {
         Ministrante ministrante = service.fromFormDto(dto);
         ministrante = service.create(ministrante);

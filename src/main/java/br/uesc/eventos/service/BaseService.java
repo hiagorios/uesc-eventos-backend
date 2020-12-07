@@ -10,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.uesc.eventos.entity.BaseEntity;
 
+import javax.transaction.Transactional;
+
 public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<E, Long>> {
 
 	@Autowired
@@ -31,10 +33,12 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
 		return optional.get();
     }
 
+	@Transactional
 	public E create(E entity) {
 		return getRepository().save(entity);
 	}
 
+	@Transactional
 	public E update(Long id, E entity) {
 		this.findById(id);
 		entity.setId(id);
@@ -42,6 +46,7 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
 		return entity;
 	}
 
+	@Transactional
 	public void destroy(Long id) {
 		E entity = this.findById(id);
 		getRepository().delete(entity);

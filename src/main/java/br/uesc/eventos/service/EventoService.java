@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import br.uesc.eventos.dto.EventoListDTO;
 import br.uesc.eventos.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 
 import br.uesc.eventos.dto.EventoFormDTO;
@@ -36,8 +37,7 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
 
     public Evento fromFormDto(EventoFormDTO dto) {
         Evento evento = dto.generatePartialEntity();
-        // TODO após implementar autenticação, setar o usuario logado
-        evento.setOrganizador(usuarioService.findOrganizador());
+        evento.setOrganizador(usuarioService.getUsuarioAutenticado());
         if (dto.getIdEventoPai() != null) {
             evento.setEventoPai(findById(dto.getIdEventoPai()));
         }

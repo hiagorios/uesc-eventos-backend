@@ -1,1 +1,7 @@
 spring.profiles.active: dev
+
+auth.jwt:
+    secret: ZXNzZXNlY3JldGRldmVzZXJpbmNyaXZlbG1lbnRlZGlmw61jaWxkZXF1ZWJyYXJwZm51bmNhcGVkaW5hZGE=
+    expiration: 600000
+
+logging.level.root: INFO
