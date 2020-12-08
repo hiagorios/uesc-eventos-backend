@@ -23,7 +23,6 @@ public class UsuarioController extends BaseController<Usuario, UsuarioRepository
     @Autowired
     private PerfilService perfilService;
 
-    @PreAuthorize("hasAuthority('CRIAR_USUARIO')")
     @PostMapping("/storeDto")
     @ApiOperation(value = "Enviar DTO para criação de usuário")
     public ResponseEntity<Usuario> storeDto(@RequestBody @Valid UsuarioFormDTO dto) {

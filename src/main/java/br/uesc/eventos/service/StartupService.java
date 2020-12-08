@@ -44,7 +44,7 @@ public class StartupService {
         organizador = perfilService.create(organizador);
         participante = perfilService.create(participante);
 
-        Usuario u1 = new Usuario("Hiago Rios", "hrcordeiro.cic@uesc.br", PasswordUtil.encode("123456"), administrador,
+        Usuario u1 = new Usuario("Admin", "admin@uesc.br", PasswordUtil.encode("123456"), administrador,
                 "73856832076");
         u1 = usuarioService.create(u1);
         Usuario u2 = new Usuario("Joao Henrique", "jhalgumacoisa.cic@uesc.br", PasswordUtil.encode("123456"), organizador,

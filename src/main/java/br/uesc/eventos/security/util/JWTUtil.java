@@ -34,7 +34,7 @@ public class JWTUtil {
     public String getSubject(String token) {
         return JWT.require(HMAC512(secret.getBytes()))
                 .build()
-                .verify(token.replace("Bearer", ""))
+                .verify(token.replace("Bearer ", ""))
                 .getSubject();
     }
 
