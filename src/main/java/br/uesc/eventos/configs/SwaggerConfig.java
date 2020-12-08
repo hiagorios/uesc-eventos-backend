@@ -22,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
 	
@@ -29,7 +30,7 @@ public class SwaggerConfig {
     public Docket api() { 
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                             
-          .apis(RequestHandlerSelectors.basePackage("br.uesc.lavoura"))
+          .apis(RequestHandlerSelectors.basePackage("br.uesc.eventos"))
           .paths(PathSelectors.any())
           .build()
           .apiInfo(metaData())
@@ -39,12 +40,12 @@ public class SwaggerConfig {
 	
 	private ApiInfo metaData() {
 		return new ApiInfoBuilder()
-		.title("Exemplo de documentação da nossa API REST")
-		.description("\"Lorem ipslum\"")
-		.version("2.0.0")
-		.license("Apache License Version 2.0")
-		.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
-		.build();
+				.title("Documentação Spring Boot REST API UESC Eventos")
+				.description("\"Documentação Endpoints do Projeto UESC Eventos\"")
+				.version("1.0.0")
+				.license("Apache License Version 2.0")
+				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
+				.build();
 	}
 	
 	private ApiKey apiKey() {

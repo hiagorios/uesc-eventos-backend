@@ -1,23 +1,19 @@
 package br.uesc.eventos.entity;
 
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import br.uesc.eventos.enums.TipoUsuario;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
-public class Usuario extends BaseEntity {
+public class Usuario extends BaseEntity implements UserDetails {
 
     @NotNull
     private String nome;
@@ -29,9 +25,11 @@ public class Usuario extends BaseEntity {
     @NotNull
     private String senha;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private TipoUsuario tipoUsuario;
+    private boolean ativo = true;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "perfil_id", referencedColumnName = "id")
+    private Perfil perfil;
 
     @NotNull
     @Column(unique = true)
@@ -47,11 +45,11 @@ public class Usuario extends BaseEntity {
 
     }
 
-    public Usuario(String nome, String email, String senha, TipoUsuario tipoUsuario, String cpf) {
+    public Usuario(String nome, String email, String senha, Perfil perfil, String cpf) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.tipoUsuario = tipoUsuario;
+        this.perfil = perfil;
         this.cpf = cpf;
     }
 
@@ -79,14 +77,6 @@ public class Usuario extends BaseEntity {
         this.senha = senha;
     }
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
-
     public String getCpf() {
         return cpf;
     }
@@ -103,4 +93,55 @@ public class Usuario extends BaseEntity {
         this.eventos = eventos;
     }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return perfil.getPermissoes().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getKey())).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
+    }
 }

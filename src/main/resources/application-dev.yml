@@ -16,3 +16,5 @@ spring:
                 format_sql: true
                 event.merge.entity_copy_observer: allow
         show-sql: true
+
+app.client.url: http://localhost:4200
