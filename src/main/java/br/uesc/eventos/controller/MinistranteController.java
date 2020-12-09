@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +23,9 @@ public class MinistranteController extends BaseController<Ministrante, Ministran
 	
 	@PostMapping("/storeDto")
     @Transactional
+    @PreAuthorize("hasAuthority('CRIAR_MINISTRANTE')")
     @ApiOperation(value = "Enviar DTO para criação de ministrante")
-    public ResponseEntity<Ministrante> storeDto(@RequestBody @Valid MinistranteFormDTO dto) {
-        Ministrante ministrante = service.fromFormDto(dto);
+    public ResponseEntity<Ministrante> storeDto(@RequestBody @Valid Ministrante ministrante) {
         ministrante = service.create(ministrante);
         return ResponseEntity.status(201).body(ministrante);
     }

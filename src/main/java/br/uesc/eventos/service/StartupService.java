@@ -129,7 +129,7 @@ public class StartupService {
 
     public Set<Permissao> getPermissoesParticipante(Set<Permissao> todasPermissoes) {
         Set<String> permissoes = Stream.of(
-                PermissaoEnum.CONSULTAR_EVENTO.name(), PermissaoEnum.INSCREVER_SE.name()
+                PermissaoEnum.INSCREVER_SE.name()
         ).collect(Collectors.toSet());
         return todasPermissoes.stream().filter(permissao -> permissoes.contains(permissao.getKey())).collect(Collectors.toSet());
     }
