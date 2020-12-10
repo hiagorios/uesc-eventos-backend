@@ -8,6 +8,7 @@ public class MinistranteFormDTO implements BaseDTO<Ministrante> {
     private String nome;
     private String email;
     private String formacao;
+    private String instituicao;
 
     public MinistranteFormDTO() {
 
@@ -18,6 +19,7 @@ public class MinistranteFormDTO implements BaseDTO<Ministrante> {
         this.nome = ministrante.getNome();
         this.email = ministrante.getEmail();
         this.formacao = ministrante.getFormacao();
+        this.instituicao = ministrante.getInstituicao();
     }
 
     @Override
@@ -27,6 +29,7 @@ public class MinistranteFormDTO implements BaseDTO<Ministrante> {
         ministrante.setEmail(email);
         ministrante.setNome(nome);
         ministrante.setId(id);
+        ministrante.setInstituicao(instituicao);
         return ministrante;
     }
 
@@ -62,4 +65,11 @@ public class MinistranteFormDTO implements BaseDTO<Ministrante> {
         this.formacao = formacao;
     }
 
+    public String getInstituicao() {
+        return instituicao;
+    }
+
+    public void setInstituicao(String instituicao) {
+        this.instituicao = instituicao;
+    }
 }

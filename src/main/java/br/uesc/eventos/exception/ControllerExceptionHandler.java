@@ -18,6 +18,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CustomResponseException.class)
     public ResponseEntity<Map<String, Object>> handleCustomResponseException(CustomResponseException ex) {
         Map<String, Object> resposta = new HashMap<>();
+        ex.printStackTrace();
         resposta.put("message", ex.getMessage());
         resposta.put("status", ex.getStatus().value());
 //		resposta.put("errors", null);
@@ -28,6 +29,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAccessDeniedException(
             Exception ex, WebRequest request) {
         return new ResponseEntity<>(
-                "Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
+                "Access denied. You are not allowed to access the requested resource", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 }
