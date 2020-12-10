@@ -1,18 +1,15 @@
 package br.uesc.eventos.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import br.uesc.eventos.dto.EventoFormDTO;
 import br.uesc.eventos.dto.EventoListDTO;
+import br.uesc.eventos.entity.Evento;
 import br.uesc.eventos.entity.Usuario;
+import br.uesc.eventos.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 
-import br.uesc.eventos.dto.EventoFormDTO;
-import br.uesc.eventos.entity.Evento;
-import br.uesc.eventos.repository.EventoRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EventoService extends BaseService<Evento, EventoRepository> {
@@ -29,7 +26,7 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
     }
 
     public List<Evento> findAllExcluding(Long excludeId) {
-        if (excludeId != null){
+        if (excludeId != null) {
             return getRepository().findByIdNot(excludeId);
         }
         return getRepository().findAll();
@@ -54,7 +51,7 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
         return dto;
     }
 
-    public void inscrever(Long eventoId, Long usuarioId){
+    public void inscrever(Long eventoId, Long usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
         Evento evento = findById(eventoId);
         usuario.getEventos().add(evento);

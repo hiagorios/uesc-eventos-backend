@@ -44,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomRestAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     private JWTUtil jwt;
 
     private static final String[] PUBLIC_MATCHERS = {
@@ -55,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS_GET = {};
 
-    private static final String[] PUBLIC_MATCHERS_POST = {"/logout", "/login"};
+    private static final String[] PUBLIC_MATCHERS_POST = {"/logout", "/login", "/usuarios/storeDto"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(unauthorizedHandler);
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwt))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwt));
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwt, userDetailsService));
         // this disables session creation on Spring Security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -87,11 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService();
-    }
+//    @Bean
+//    @Override
+//    public UserDetailsService userDetailsService() {
+//        return new MyUserDetailsService();
+//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
