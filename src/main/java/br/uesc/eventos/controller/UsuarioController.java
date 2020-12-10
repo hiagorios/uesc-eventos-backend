@@ -1,6 +1,7 @@
 package br.uesc.eventos.controller;
 
 import br.uesc.eventos.dto.PerfilDTO;
+import br.uesc.eventos.dto.UsuarioDTO;
 import br.uesc.eventos.dto.UsuarioFormDTO;
 import br.uesc.eventos.entity.Usuario;
 import br.uesc.eventos.repository.UsuarioRepository;
@@ -24,6 +25,15 @@ public class UsuarioController extends BaseController<Usuario, UsuarioRepository
 
     @Autowired
     private PerfilService perfilService;
+
+    @GetMapping("/allDto")
+    @PreAuthorize("hasAuthority('CONSULTAR_USUARIO')")
+    @ApiOperation(value = "Buscar DTOs para todos os eventos")
+    public ResponseEntity<List<UsuarioDTO>> findAllDto() {
+        List<UsuarioDTO> list = service.findAll().stream().map(UsuarioDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(list);
+    }
 
     @GetMapping("/formDto/{id}")
     @PreAuthorize("hasAuthority('EDITAR_USUARIO')")

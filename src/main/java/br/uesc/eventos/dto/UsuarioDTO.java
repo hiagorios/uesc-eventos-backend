@@ -7,6 +7,8 @@ public class UsuarioDTO implements BaseDTO<Usuario> {
     private Long id;
     private String nome;
     private String email;
+    private String cpf;
+    private PerfilDTO perfil;
 
     public UsuarioDTO() {
 
@@ -16,6 +18,8 @@ public class UsuarioDTO implements BaseDTO<Usuario> {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
+        this.cpf = usuario.getCpf();
+        this.perfil = new PerfilDTO(usuario.getPerfil());
     }
 
     @Override
@@ -51,4 +55,19 @@ public class UsuarioDTO implements BaseDTO<Usuario> {
         this.email = email;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public PerfilDTO getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(PerfilDTO perfil) {
+        this.perfil = perfil;
+    }
 }

@@ -25,6 +25,8 @@ public class Ministrante extends BaseEntity {
     @Lob
     private String formacao;
 
+    private String instituicao;
+
     @ManyToMany(mappedBy = "ministrantes")
     @JsonIgnore
     Set<Evento> eventos;
@@ -38,6 +40,14 @@ public class Ministrante extends BaseEntity {
         this.nome = nome;
         this.email = email;
         this.formacao = formacao;
+    }
+
+    public Ministrante(String nome, String email, String formacao, String instituicao) {
+        super();
+        this.nome = nome;
+        this.email = email;
+        this.formacao = formacao;
+        this.instituicao = instituicao;
     }
 
     public String getNome() {
@@ -75,4 +85,11 @@ public class Ministrante extends BaseEntity {
         this.eventos = eventos;
     }
 
+    public String getInstituicao() {
+        return instituicao;
+    }
+
+    public void setInstituicao(String instituicao) {
+        this.instituicao = instituicao;
+    }
 }
