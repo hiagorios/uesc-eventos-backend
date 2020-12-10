@@ -5,6 +5,7 @@ import br.uesc.eventos.entity.Usuario;
 import br.uesc.eventos.exception.CustomResponseException;
 import br.uesc.eventos.repository.UsuarioRepository;
 import br.uesc.eventos.security.service.MyUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,16 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService extends BaseService<Usuario, UsuarioRepository> {
+
+    @Autowired
+    private PerfilService perfilService;
+
     public Usuario fromFormDto(UsuarioFormDTO dto) {
-        return dto.generatePartialEntity();
+        Usuario usuario = dto.generatePartialEntity();
+        if (dto.getPerfilId() != null) {
+            usuario.setPerfil(perfilService.findById(dto.getPerfilId()));
+        }
+        return usuario;
     }
 
     public Usuario findByEmail(String email) {
