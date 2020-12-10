@@ -9,6 +9,7 @@ public class UsuarioFormDTO implements BaseDTO<Usuario> {
     private String email;
     private String senha;
     private String cpf;
+    private Long perfilId;
 
     public UsuarioFormDTO() {
 
@@ -18,7 +19,7 @@ public class UsuarioFormDTO implements BaseDTO<Usuario> {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
-        this.senha = usuario.getSenha();
+        this.perfilId = usuario.getPerfil().getId();
         this.cpf = usuario.getCpf();
     }
 
@@ -71,5 +72,13 @@ public class UsuarioFormDTO implements BaseDTO<Usuario> {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public Long getPerfilId() {
+        return perfilId;
+    }
+
+    public void setPerfilId(Long perfilId) {
+        this.perfilId = perfilId;
     }
 }
