@@ -50,6 +50,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             );
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new CustomResponseException(HttpStatus.BAD_REQUEST, "Não foi possível ler as credenciais", e);
         }
     }

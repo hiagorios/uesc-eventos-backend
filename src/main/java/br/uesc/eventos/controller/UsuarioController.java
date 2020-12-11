@@ -4,7 +4,6 @@ import br.uesc.eventos.dto.PerfilDTO;
 import br.uesc.eventos.dto.UsuarioDTO;
 import br.uesc.eventos.dto.UsuarioFormDTO;
 import br.uesc.eventos.entity.Usuario;
-import br.uesc.eventos.repository.UsuarioRepository;
 import br.uesc.eventos.security.util.PasswordUtil;
 import br.uesc.eventos.service.PerfilService;
 import br.uesc.eventos.service.UsuarioService;
@@ -21,10 +20,21 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController extends BaseController<Usuario, UsuarioRepository, UsuarioService> {
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService service;
 
     @Autowired
     private PerfilService perfilService;
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('CONSULTAR_USUARIO')")
+    @ApiOperation(value = "Consultar todos os usuários")
+    public ResponseEntity<List<Usuario>> findAll() {
+        List<Usuario> usuarios = service.findAll();
+        return ResponseEntity.ok().body(usuarios);
+    }
 
     @GetMapping("/allDto")
     @PreAuthorize("hasAuthority('CONSULTAR_USUARIO')")
@@ -73,5 +83,13 @@ public class UsuarioController extends BaseController<Usuario, UsuarioRepository
     @ApiOperation(value = "Buscar perfis para edição de usuário")
     public ResponseEntity<List<PerfilDTO>> getPerfisDto() {
         return ResponseEntity.ok().body(perfilService.findAll().stream().map(PerfilDTO::new).collect(Collectors.toList()));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETAR_USUARIO')")
+    @ApiOperation(value = "Remover um usuário")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+        service.deleteCascading(id);
+        return ResponseEntity.noContent().build();
     }
 }

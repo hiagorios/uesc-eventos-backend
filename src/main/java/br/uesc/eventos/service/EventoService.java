@@ -8,6 +8,7 @@ import br.uesc.eventos.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,5 +61,20 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
         Evento evento = findById(eventoId);
         usuario.getEventos().add(evento);
         usuarioService.update(usuarioId, usuario);
+    }
+
+    @Transactional
+    public void deleteCascading(Long id) {
+        Evento evento = findById(id);
+        evento.setMinistrantes(null);
+        for (Evento filho : evento.getEventosFilhos()){
+            deleteCascading(filho.getId());
+        }
+        for (Usuario u : evento.getParticipantes()){
+            u.getEventos().remove(evento);
+            usuarioService.update(u.getId(), u);
+        }
+        update(id, evento);
+        destroy(id);
     }
 }

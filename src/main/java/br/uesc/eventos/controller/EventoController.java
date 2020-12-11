@@ -3,9 +3,9 @@ package br.uesc.eventos.controller;
 import br.uesc.eventos.dto.EventoFormDTO;
 import br.uesc.eventos.dto.EventoListDTO;
 import br.uesc.eventos.entity.Evento;
-import br.uesc.eventos.repository.EventoRepository;
 import br.uesc.eventos.service.EventoService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,18 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/eventos")
-public class EventoController extends BaseController<Evento, EventoRepository, EventoService> {
+public class EventoController {
+
+    @Autowired
+    private EventoService service;
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('CONSULTAR_EVENTO')")
+    @ApiOperation(value = "Consultar todos os eventos")
+    public ResponseEntity<List<Evento>> findAll() {
+        List<Evento> eventos = service.findAll();
+        return ResponseEntity.ok().body(eventos);
+    }
 
     @GetMapping("/formDto/{id}")
     @PreAuthorize("hasAnyAuthority('CRIAR_EVENTO', 'EDITAR_EVENTO')")
@@ -95,6 +106,14 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
     public ResponseEntity<Void> updateDto(@PathVariable Long id, @RequestBody EventoFormDTO dto) {
         Evento evento = service.fromFormDto(dto);
         service.update(id, evento);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETAR_EVENTO')")
+    @ApiOperation(value = "Remover um evento")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+        service.deleteCascading(id);
         return ResponseEntity.noContent().build();
     }
 }

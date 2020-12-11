@@ -58,6 +58,7 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
         try {
             return getRepository().save(entity);
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             throw new CustomResponseException(HttpStatus.BAD_REQUEST, "Não foi possível criar. " + getEntityName() + " inválid" + getWordGenderLetter());
         }
     }
@@ -69,6 +70,7 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
             entity = getRepository().save(entity);
             return entity;
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             throw new CustomResponseException(HttpStatus.BAD_REQUEST, "Não foi possível editar. " + getEntityName() + " inválid" + getWordGenderLetter());
         }
     }
@@ -78,6 +80,7 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
         try {
             getRepository().delete(entity);
         } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            e.printStackTrace();
             throw new CustomResponseException(HttpStatus.CONFLICT, "Não foi possível deletar " + getTheEntity() + ", pois está associado a outros objetos.");
         }
     }
