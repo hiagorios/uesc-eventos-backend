@@ -54,7 +54,7 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         List<Evento> list = service.findAllAvailable();
-        List<Evento> filteredList = list.stream().filter(evento -> evento.getInicio().isEqual(dateTime) || evento.getInicio().isAfter(dateTime)).collect(Collectors.toList());
+        List<Evento> filteredList = list.stream().filter(evento -> evento.getFimInscricoes().isEqual(dateTime) || evento.getFimInscricoes().isAfter(dateTime)).collect(Collectors.toList());
         List<EventoListDTO> dtos = filteredList.stream().map(evento -> service.toListDto(evento)).collect(Collectors.toList());
         return ResponseEntity.ok().body(dtos);
     }
