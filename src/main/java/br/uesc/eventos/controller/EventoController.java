@@ -13,6 +13,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,18 @@ public class EventoController extends BaseController<Evento, EventoRepository, E
     public ResponseEntity<List<EventoListDTO>> findAvailable() {
         List<Evento> list = service.findAllAvailable();
         List<EventoListDTO> dtos = list.stream().map(evento -> service.toListDto(evento)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(dtos);
+    }
+
+    @GetMapping("/available/{date}")
+    @PreAuthorize("hasAuthority('INSCREVER_SE')")
+    @ApiOperation(value = "Buscar DTOs de eventos disponíveis por data maior ou igual")
+    public ResponseEntity<List<EventoListDTO>> findAvailableByDate(@PathVariable String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        List<Evento> list = service.findAllAvailable();
+        List<Evento> filteredList = list.stream().filter(evento -> evento.getInicio().isEqual(dateTime) || evento.getInicio().isAfter(dateTime)).collect(Collectors.toList());
+        List<EventoListDTO> dtos = filteredList.stream().map(evento -> service.toListDto(evento)).collect(Collectors.toList());
         return ResponseEntity.ok().body(dtos);
     }
 
