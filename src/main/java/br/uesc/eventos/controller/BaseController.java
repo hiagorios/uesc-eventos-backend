@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -27,7 +26,6 @@ public abstract class BaseController<E extends BaseEntity, R extends JpaReposito
     }
 
     @PostMapping
-    @Transactional
     @ApiOperation(value = "Criar um registro")
     public ResponseEntity<E> create(@RequestBody @Valid E entity) {
         entity = service.create(entity);
@@ -43,7 +41,6 @@ public abstract class BaseController<E extends BaseEntity, R extends JpaReposito
     }
 
     @PutMapping("/{id}")
-    @Transactional
     @ApiOperation(value = "Editar um registro")
     public ResponseEntity<E> update(@PathVariable(value = "id") Long id, @RequestBody @Valid E entity) {
         service.update(id, entity);
@@ -51,7 +48,6 @@ public abstract class BaseController<E extends BaseEntity, R extends JpaReposito
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     @ApiOperation(value = "Remover um registro")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         service.destroy(id);

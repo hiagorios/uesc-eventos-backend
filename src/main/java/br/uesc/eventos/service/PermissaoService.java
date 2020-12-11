@@ -13,9 +13,13 @@ import java.util.Set;
 @Service
 public class PermissaoService extends BaseService<Permissao, PermissaoRepository> {
 
+    public PermissaoService() {
+        super("Permissão", 'a');
+    }
+
     public Permissao findByKey(String key) {
         Optional<Permissao> opt = this.getRepository().findByKey(key);
-        return opt.orElseThrow(() -> new CustomResponseException(HttpStatus.NOT_FOUND, "Nenhuma permissão encontrada com a key " + key));
+        return opt.orElseThrow(() -> new CustomResponseException(HttpStatus.NOT_FOUND, "Nenhuma permissão encontrada com a chave " + key));
     }
 
     public boolean checkExistsByKey(String key) {

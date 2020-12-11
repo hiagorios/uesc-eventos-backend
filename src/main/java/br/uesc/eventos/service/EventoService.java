@@ -20,6 +20,10 @@ public class EventoService extends BaseService<Evento, EventoRepository> {
     @Autowired
     private MinistranteService ministranteService;
 
+    public EventoService() {
+        super("Evento", 'o');
+    }
+
     public List<Evento> findAllAvailable() {
         LocalDateTime agora = LocalDateTime.now();
         return getRepository().findByInicioInscricoesLessThanAndFimInscricoesGreaterThan(agora, agora);

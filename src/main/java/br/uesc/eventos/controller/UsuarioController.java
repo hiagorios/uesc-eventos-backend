@@ -51,7 +51,7 @@ public class UsuarioController extends BaseController<Usuario, UsuarioRepository
         usuario.setAtivo(true);
         usuario.setSenha(PasswordUtil.encode(usuario.getSenha()));
         usuario = service.create(usuario);
-        return ResponseEntity.status(201).body(usuario);
+        return ResponseEntity.ok().body(usuario);
     }
 
     @Transactional

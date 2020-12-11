@@ -17,6 +17,10 @@ public class UsuarioService extends BaseService<Usuario, UsuarioRepository> {
     @Autowired
     private PerfilService perfilService;
 
+    public UsuarioService() {
+        super("Usuário", 'o');
+    }
+
     public Usuario fromFormDto(UsuarioFormDTO dto) {
         Usuario usuario = dto.generatePartialEntity();
         if (dto.getPerfilId() != null) {
