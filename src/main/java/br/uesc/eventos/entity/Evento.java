@@ -4,13 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -18,7 +12,7 @@ import com.sun.istack.NotNull;
 @Entity
 public class Evento extends BaseEntity {
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     private Evento eventoPai;
 
     @OneToMany(mappedBy = "eventoPai")
@@ -56,7 +50,7 @@ public class Evento extends BaseEntity {
     @JoinColumn(referencedColumnName = "id", name = "organizador_id", updatable = false)
     private Usuario organizador;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "ministrante_evento", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "ministrante_id"))
     private Set<Ministrante> ministrantes;
 

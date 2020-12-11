@@ -18,7 +18,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CustomResponseException.class)
     public ResponseEntity<Map<String, Object>> handleCustomResponseException(CustomResponseException ex) {
         Map<String, Object> resposta = new HashMap<>();
-        ex.printStackTrace();
         resposta.put("message", ex.getMessage());
         resposta.put("status", ex.getStatus().value());
 //		resposta.put("errors", null);

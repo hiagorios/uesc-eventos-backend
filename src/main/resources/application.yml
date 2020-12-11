@@ -4,4 +4,6 @@ auth.jwt:
     secret: ZXNzZXNlY3JldGRldmVzZXJpbmNyaXZlbG1lbnRlZGlmw61jaWxkZXF1ZWJyYXJwZm51bmNhcGVkaW5hZGE=
     expiration: 43200000
 
-logging.level.root: INFO
+logging:
+    level.root: INFO
+#    level.org.springframework.security: DEBUG

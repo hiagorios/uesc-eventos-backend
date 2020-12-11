@@ -11,6 +11,10 @@ import java.util.Optional;
 @Service
 public class PerfilService extends BaseService<Perfil, PerfilRepository> {
 
+    public PerfilService() {
+        super("Perfil", 'o');
+    }
+
     public Perfil findByNome(String nome) {
         Optional<Perfil> opt = this.getRepository().findByNome(nome);
         return opt.orElseThrow(() -> new CustomResponseException(HttpStatus.NOT_FOUND, "Nenhum perfil encontrado com o nome " + nome));

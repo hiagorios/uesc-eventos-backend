@@ -1,19 +1,26 @@
 package br.uesc.eventos.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-public class CustomResponseException extends ResponseStatusException {
+public class CustomResponseException extends RuntimeException {
+
+    private final HttpStatus status;
 
     public CustomResponseException(HttpStatus status) {
-        super(status);
+        this.status = status;
     }
 
-    public CustomResponseException(HttpStatus status, String reason) {
-        super(status, reason);
+    public CustomResponseException(HttpStatus status, String message) {
+        super(message);
+        this.status = status;
     }
 
-    public CustomResponseException(HttpStatus status, String reason, Throwable cause) {
-        super(status, reason, cause);
+    public CustomResponseException(HttpStatus status, String message, Throwable cause) {
+        super(message, cause);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 }

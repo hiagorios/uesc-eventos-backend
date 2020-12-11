@@ -4,11 +4,10 @@ import br.uesc.eventos.entity.BaseEntity;
 import br.uesc.eventos.exception.CustomResponseException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +15,28 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
 
     @Autowired
     private R repository;
+
+    private final String entityName;
+    private final char wordGenderLetter;
+    private final String theEntity;
+
+    public BaseService(String entityName, char wordGenderLetter) {
+        this.entityName = entityName;
+        this.wordGenderLetter = wordGenderLetter;
+        this.theEntity = wordGenderLetter + " " + entityName;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public char getWordGenderLetter() {
+        return wordGenderLetter;
+    }
+
+    public String getTheEntity() {
+        return theEntity;
+    }
 
     protected R getRepository() {
         return repository;
@@ -28,31 +49,39 @@ public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<
     public E findById(Long id) {
         Optional<E> optional = getRepository().findById(id);
         if (optional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entidade não foi encontrada!");
+            throw new CustomResponseException(HttpStatus.NOT_FOUND, getEntityName() + " não encontrad" + getWordGenderLetter());
         }
         return optional.get();
     }
 
-    @Transactional
     public E create(E entity) {
-        return getRepository().save(entity);
+        try {
+            return getRepository().save(entity);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            throw new CustomResponseException(HttpStatus.BAD_REQUEST, "Não foi possível criar. " + getEntityName() + " inválid" + getWordGenderLetter());
+        }
     }
 
-    @Transactional
     public E update(Long id, E entity) {
         this.findById(id);
         entity.setId(id);
-        entity = getRepository().save(entity);
-        return entity;
+        try {
+            entity = getRepository().save(entity);
+            return entity;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            throw new CustomResponseException(HttpStatus.BAD_REQUEST, "Não foi possível editar. " + getEntityName() + " inválid" + getWordGenderLetter());
+        }
     }
 
-    @Transactional
     public void destroy(Long id) {
         E entity = this.findById(id);
         try {
             getRepository().delete(entity);
-        } catch (ConstraintViolationException e) {
-            throw new CustomResponseException(HttpStatus.CONFLICT, "Não foi possível deletar. Este objeto está associado a outros.");
+        } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            e.printStackTrace();
+            throw new CustomResponseException(HttpStatus.CONFLICT, "Não foi possível deletar " + getTheEntity() + ", pois está associado a outros objetos.");
         }
     }
 }
